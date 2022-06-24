@@ -1,5 +1,5 @@
 {
-  "name": "cipher",
+  "name": "nestjs-logger",
   "version": "1.0.1",
   "description": "libreria de cifrado en node",
   "main": "dist/index.ts",
