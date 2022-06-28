@@ -7,6 +7,7 @@ import {
 } from 'winston';
 import DailyRotateFile from 'winston-daily-rotate-file';
 import moment from 'moment';
+import { Logger } from 'interface/logger.interface';
 
 @Injectable()
 export class WinstonService implements LoggerService {

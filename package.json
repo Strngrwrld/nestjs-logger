@@ -1,7 +1,7 @@
 {
   "name": "nestjs-logger",
   "version": "1.0.1",
-  "description": "libreria de cifrado en node",
+  "description": "libreria de logger",
   "main": "dist/index.ts",
   "files": [
     "dist/**/*",
