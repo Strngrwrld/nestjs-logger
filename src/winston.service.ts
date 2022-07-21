@@ -8,6 +8,7 @@ import {
 import DailyRotateFile from 'winston-daily-rotate-file';
 import moment from 'moment';
 import { Logger } from 'interface/logger.interface';
+import * as fs from 'fs';
 
 @Injectable()
 export class WinstonService implements LoggerService {
@@ -33,10 +34,13 @@ export class WinstonService implements LoggerService {
   }
 
   constructor(/* config: LoggerOptions */) {
+    if (!fs.existsSync('./logs')) {
+      fs.mkdirSync('./logs');
+    }
+
     this._logger = createLogger({
       level: 'debug',
       format: format.json(),
-      //defaultMeta: { service: 'user-service' },
       transports: [
         new DailyRotateFile({
           format: format.printf(this._fileFormat()),
