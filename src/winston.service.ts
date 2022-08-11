@@ -14,25 +14,6 @@ import * as fs from 'fs';
 export class WinstonService implements LoggerService {
   private _logger: WinstonLogger;
 
-  _fileFormat() {
-    return (log: any) => {
-      const TIMESTAMP = moment().valueOf();
-      const LEVEL = log.level.toUpperCase();
-      const MESSAGE = log.message;
-      const CONTEXT_MAP = log.contextMap;
-      const LOGGER_NAME = log.loggerName;
-      return JSON.stringify({
-        timeMillis: TIMESTAMP,
-        contextMap: CONTEXT_MAP,
-        level: LEVEL,
-        message: `${moment()
-          .utc()
-          .format('YYYYMMDDThhmmss')} ${LEVEL} ${MESSAGE}`,
-        loggerName: LOGGER_NAME,
-      });
-    };
-  }
-
   constructor(/* config: LoggerOptions */) {
     if (!fs.existsSync('./logs')) {
       fs.mkdirSync('./logs');
@@ -45,6 +26,7 @@ export class WinstonService implements LoggerService {
         new DailyRotateFile({
           format: format.printf(this._fileFormat()),
           filename: './logs/erm-bff-employee-rest-error-%DATE%.log',
+          auditFile: './logs/history-audit.json',
           datePattern: 'YYYY-MM-DD',
           level: 'error',
           maxFiles: '7d',
@@ -104,5 +86,24 @@ export class WinstonService implements LoggerService {
    */
   verbose?(message: Logger) {
     this._logger.verbose(message);
+  }
+
+  _fileFormat() {
+    return (log: any) => {
+      const TIMESTAMP = moment().valueOf();
+      const LEVEL = log.level.toUpperCase();
+      const MESSAGE = log.message;
+      const CONTEXT_MAP = log.contextMap;
+      const LOGGER_NAME = log.loggerName;
+      return JSON.stringify({
+        timeMillis: TIMESTAMP,
+        contextMap: CONTEXT_MAP,
+        level: LEVEL,
+        message: `${moment()
+          .utc()
+          .format('YYYYMMDDThhmmss')} ${LEVEL} ${MESSAGE}`,
+        loggerName: LOGGER_NAME,
+      });
+    };
   }
 }
